@@ -1,0 +1,30 @@
+workflows:
+  android-release:
+    name: EvoChat Android Build
+    max_build_duration: 60
+    environment:
+      flutter: stable
+      java: 17
+    scripts:
+      - name: Find project root
+        script: |
+          FLUTTER_ROOT=$(find $CM_BUILD_DIR -name "pubspec.yaml" -not -path "*/.*" | head -1 | xargs dirname)
+          echo "FLUTTER_ROOT=$FLUTTER_ROOT" >> $CM_ENV
+          echo "Found project at: $FLUTTER_ROOT"
+      - name: Get Flutter packages
+        script: |
+          cd $FLUTTER_ROOT
+          flutter pub get
+      - name: Build APK
+        script: |
+          cd $FLUTTER_ROOT
+          flutter build apk --release --android-skip-build-dependency-validation
+    artifacts:
+      - "**/build/app/outputs/flutter-apk/app-release.apk"
+    publishing:
+      email:
+        recipients:
+          - your-email@example.com
+        notify:
+          success: true
+          failure: true
