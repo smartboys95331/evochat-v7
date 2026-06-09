@@ -1,6 +1,6 @@
 workflows:
   android-release:
-    name: EvoChat Android Build
+    name: EvoChat Windows Build
     max_build_duration: 60
     environment:
       flutter: stable
@@ -15,12 +15,12 @@ workflows:
         script: |
           cd $FLUTTER_ROOT
           flutter pub get
-      - name: Build APK
+      - name: Build EXE
         script: |
           cd $FLUTTER_ROOT
-          flutter build apk --release --android-skip-build-dependency-validation
+          flutter build exe --release --windows-skip-build-dependency-validation
     artifacts:
-      - "**/build/app/outputs/flutter-apk/app-release.apk"
+      - "**/build/app/outputs/flutter_exe/evochat.exe
     publishing:
       email:
         recipients:
